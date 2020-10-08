@@ -42,7 +42,7 @@ function setup() {
 function draw() {
   background(255);
   text('Diameter', XText, 26)
-  text('Weight', XText, 51)
+  text('Density', XText, 51)
   text('% Solids', XText, 76)
 
   if (diamD.value() == 'nm') {
