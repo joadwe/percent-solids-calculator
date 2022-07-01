@@ -45,12 +45,14 @@ function draw() {
   text('Density', XText, 51)
   text('% Solids', XText, 76)
 
-  switch diamD.value() == 'nm'
+switch (diamD.value() ){
     case 'nm':
     number = diam.value() / 1000;
+      break
     case 'µm':
     number = diam.value();
   }
+
 
   w = weight.value();
   s = solids.value();
