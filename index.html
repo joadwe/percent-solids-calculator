@@ -1,13 +1,52 @@
-<!DOCTYPE html><html><head>
-    <script src="p5.js"></script>
-    <script src="p5.dom.min.js"></script>
-    <script src="p5.sound.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="utf-8">
-
-  </head>
-  <body>
-    <script src="sketch.js"></script>
-  
-
-</body></html>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percent Solids Calculator</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <h1>Percent Solids Calculator</h1>
+        
+        <form id="calculator-form">
+            <div class="input-group">
+                <label for="diameter">Diameter:</label>
+                <div class="input-with-unit">
+                    <input type="number" id="diameter" value="100" step="any" min="0">
+                    <select id="diameter-unit">
+                        <option value="nm">nm</option>
+                        <option value="µm">µm</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="density">Density:</label>
+                <div class="input-with-unit">
+                    <input type="number" id="density" value="1.05" step="any" min="0">
+                    <select id="density-unit">
+                        <option value="g/mL">g/mL</option>
+                        <option value="g/L">g/L</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="solids">% Solids:</label>
+                <div class="input-with-unit">
+                    <input type="number" id="solids" value="1" step="any" min="0">
+                    <span class="unit-label">%</span>
+                </div>
+            </div>
+        </form>
+        
+        <div id="result" class="result-display">
+            <!-- Result will be displayed here -->
+        </div>
+    </div>
+    
+    <script src="calculator.js"></script>
+</body>
+</html>

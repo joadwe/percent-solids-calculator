@@ -1,7 +1,191 @@
-html, body {
+/* Modern styling for the calculator */
+html {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
-canvas {
-  display: block;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#app-container {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
+  width: 100%;
+  margin: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin: 0 0 30px 0;
+  font-weight: 600;
+  font-size: 28px;
+}
+
+#calculator-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.input-with-unit {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+}
+
+.input-with-unit input {
+  flex: 3;
+  min-width: 0;
+}
+
+.input-with-unit select {
+  flex: 1;
+  min-width: 0;
+}
+
+.unit-label {
+  background: #f8f9fa;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 2px solid #e1e5e9;
+  font-weight: 600;
+  color: #666;
+  text-align: center;
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Modern input styling */
+input, select {
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+input:hover, select:hover {
+  border-color: #c3c9d3;
+}
+
+/* Enhanced select styling */
+select {
+  cursor: pointer;
+  min-width: 80px;
+  background: #fff url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Firefox specific styling */
+select::-moz-focus-inner {
+  border: 0;
+}
+
+/* IE specific styling */
+select::-ms-expand {
+  display: none;
+}
+
+/* Enhanced focus and hover states for select */
+select:focus {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+select:hover {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+/* Result display styling */
+.result-display {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  min-height: 24px;
+  line-height: 1.4;
+  transition: all 0.3s ease;
+}
+
+.result-display.error {
+  border-left-color: #e74c3c;
+  background: #fdf2f2;
+  color: #e74c3c;
+}
+
+.result-display.success {
+  border-left-color: #27ae60;
+  background: #f0f9f4;
+  color: #333;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  #app-container {
+    margin: 10px;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .input-with-unit {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .unit-label {
+    text-align: center;
+  }
 }
