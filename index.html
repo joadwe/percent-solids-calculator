@@ -10,11 +10,11 @@
     <div id="app-container">
         <h1>Percent Solids Calculator</h1>
         
-        <form id="calculator-form">
+        <form id="calculator-form" novalidate>
             <div class="input-group">
                 <label for="diameter">Diameter:</label>
                 <div class="input-with-unit">
-                    <input type="number" id="diameter" value="100" step="any" min="0">
+                    <input type="number" id="diameter" value="100" step="any" min="0" inputmode="decimal">
                     <select id="diameter-unit">
                         <option value="nm">nm</option>
                         <option value="µm">µm</option>
@@ -36,7 +36,7 @@
             <div class="input-group hidden" id="custom-density-group">
                 <label for="density">Custom Density:</label>
                 <div class="input-with-unit">
-                    <input type="number" id="density" value="1.05" step="any" min="0">
+                    <input type="number" id="density" value="1.05" step="any" min="0" inputmode="decimal">
                     <span class="unit-label">g/mL</span>
                 </div>
             </div>
@@ -44,13 +44,13 @@
             <div class="input-group">
                 <label for="solids">% Solids:</label>
                 <div class="input-with-unit">
-                    <input type="number" id="solids" value="1" step="any" min="0">
+                    <input type="number" id="solids" value="1" step="any" min="0" inputmode="decimal">
                     <span class="unit-label">%</span>
                 </div>
             </div>
         </form>
         
-        <div id="result" class="result-display">
+        <div id="result" class="result-display" aria-live="polite">
             <!-- Result will be displayed here -->
         </div>
     </div>

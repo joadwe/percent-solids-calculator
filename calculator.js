@@ -8,6 +8,7 @@ class PercentSolidsCalculator {
     }
 
     initializeElements() {
+        this.form = document.getElementById('calculator-form');
         this.diameterInput = document.getElementById('diameter');
         this.diameterUnitSelect = document.getElementById('diameter-unit');
         this.compositionSelect = document.getElementById('composition');
@@ -15,29 +16,27 @@ class PercentSolidsCalculator {
         this.densityInput = document.getElementById('density');
         this.solidsInput = document.getElementById('solids');
         this.resultDisplay = document.getElementById('result');
-
-        this.compositionDensities = {
-            polystyrene: 1.05,
-            silica: 2.0
-        };
+        this.customDensityValue = this.densityInput.value;
 
         this.updateDensityInputState();
     }
 
     attachEventListeners() {
-        // Add event listeners to all inputs
-        const inputs = [
-            this.diameterInput,
-            this.diameterUnitSelect,
-            this.compositionSelect,
-            this.densityInput,
-            this.solidsInput
-        ];
-
-        inputs.forEach(input => {
-            input.addEventListener('input', () => this.calculate());
-            input.addEventListener('change', () => this.calculate());
+        this.form.addEventListener('submit', event => {
+            event.preventDefault();
+            this.calculate();
         });
+
+        this.diameterInput.addEventListener('input', () => this.calculate());
+        this.diameterUnitSelect.addEventListener('change', () => this.calculate());
+        this.densityInput.addEventListener('input', () => {
+            if (this.compositionSelect.value === 'custom') {
+                this.customDensityValue = this.densityInput.value;
+            }
+
+            this.calculate();
+        });
+        this.solidsInput.addEventListener('input', () => this.calculate());
 
         this.compositionSelect.addEventListener('change', () => {
             this.updateDensityInputState();
@@ -50,11 +49,17 @@ class PercentSolidsCalculator {
 
         if (selectedComposition === 'custom') {
             this.customDensityGroup.classList.remove('hidden');
+            this.densityInput.value = this.customDensityValue;
             return;
         }
 
         this.customDensityGroup.classList.add('hidden');
-        this.densityInput.value = this.compositionDensities[selectedComposition];
+        this.densityInput.value = this.getSelectedCompositionDensity();
+    }
+
+    getSelectedCompositionDensity() {
+        const selectedOption = this.compositionSelect.selectedOptions[0];
+        return selectedOption ? parseFloat(selectedOption.dataset.density) : NaN;
     }
 
     getInputValues() {
@@ -62,15 +67,20 @@ class PercentSolidsCalculator {
         const selectedComposition = this.compositionSelect.value;
         const densityVal = selectedComposition === 'custom'
             ? parseFloat(this.densityInput.value)
-            : this.compositionDensities[selectedComposition];
+            : this.getSelectedCompositionDensity();
         const solidsVal = parseFloat(this.solidsInput.value);
 
-        // Validation
-        if (isNaN(diameterVal) || isNaN(densityVal) || isNaN(solidsVal) ||
-            diameterVal <= 0 || densityVal <= 0 || solidsVal < 0) {
+        if (!Number.isFinite(diameterVal) || !Number.isFinite(densityVal) || !Number.isFinite(solidsVal)) {
             return { 
                 valid: false, 
-                error: 'Please enter valid, positive values for all fields.' 
+                error: 'Please enter numbers for all fields.'
+            };
+        }
+
+        if (diameterVal <= 0 || densityVal <= 0 || solidsVal < 0) {
+            return {
+                valid: false,
+                error: 'Diameter and density must be greater than zero. Percent solids cannot be negative.'
             };
         }
 
@@ -99,14 +109,26 @@ class PercentSolidsCalculator {
     }
 
     displayResult(calc) {
-        if (calc <= 0) {
-            this.displayError('Calculation result is invalid (≤ 0).');
+        if (!Number.isFinite(calc) || calc < 0) {
+            this.displayError('Calculation result is invalid.');
             return;
         }
 
-        const power = Math.floor(Math.log10(calc));
-        const mantissa = (calc / Math.pow(10, power)).toFixed(3);
-        const resultString = `${mantissa} × 10<sup>${power}</sup> particles mL<sup>-1</sup>`;
+        if (calc === 0) {
+            this.resultDisplay.innerHTML = '0 particles mL<sup>-1</sup>';
+            this.resultDisplay.className = 'result-display success';
+            return;
+        }
+
+        let power = Math.floor(Math.log10(calc));
+        let mantissa = Number((calc / Math.pow(10, power)).toFixed(3));
+
+        if (mantissa >= 10) {
+            mantissa /= 10;
+            power += 1;
+        }
+
+        const resultString = `${mantissa.toFixed(3)} × 10<sup>${power}</sup> particles mL<sup>-1</sup>`;
 
         this.resultDisplay.innerHTML = resultString;
         this.resultDisplay.className = 'result-display success';

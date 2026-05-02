@@ -3,6 +3,11 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
 body {
@@ -14,7 +19,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,7 +31,7 @@ body {
   padding: 40px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   max-width: 450px;
-  width: 100%;
+  width: calc(100% - 40px);
   margin: 20px;
 }
 
@@ -85,7 +90,6 @@ h1 {
   font-weight: 600;
   color: #666;
   text-align: center;
-  box-sizing: border-box;
   flex: 1;
   min-width: 0;
 }
@@ -99,7 +103,6 @@ input, select {
   font-family: inherit;
   background: #fff;
   transition: all 0.3s ease;
-  box-sizing: border-box;
   min-width: 0;
 }
 
@@ -176,6 +179,7 @@ select:hover {
 @media (max-width: 480px) {
   #app-container {
     margin: 10px;
+    width: calc(100% - 20px);
     padding: 20px;
   }
   
