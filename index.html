@@ -23,13 +23,21 @@
             </div>
             
             <div class="input-group">
-                <label for="density">Density:</label>
+                <label for="composition">Composition:</label>
+                <div class="input-with-unit">
+                    <select id="composition">
+                        <option value="polystyrene" data-density="1.05">Polystyrene (1.05 g/mL)</option>
+                        <option value="silica" data-density="2.00">Silica (2.00 g/mL)</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group hidden" id="custom-density-group">
+                <label for="density">Custom Density:</label>
                 <div class="input-with-unit">
                     <input type="number" id="density" value="1.05" step="any" min="0">
-                    <select id="density-unit">
-                        <option value="g/mL">g/mL</option>
-                        <option value="g/L">g/L</option>
-                    </select>
+                    <span class="unit-label">g/mL</span>
                 </div>
             </div>
             

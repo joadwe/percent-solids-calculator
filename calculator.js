@@ -10,10 +10,18 @@ class PercentSolidsCalculator {
     initializeElements() {
         this.diameterInput = document.getElementById('diameter');
         this.diameterUnitSelect = document.getElementById('diameter-unit');
+        this.compositionSelect = document.getElementById('composition');
+        this.customDensityGroup = document.getElementById('custom-density-group');
         this.densityInput = document.getElementById('density');
-        this.densityUnitSelect = document.getElementById('density-unit');
         this.solidsInput = document.getElementById('solids');
         this.resultDisplay = document.getElementById('result');
+
+        this.compositionDensities = {
+            polystyrene: 1.05,
+            silica: 2.0
+        };
+
+        this.updateDensityInputState();
     }
 
     attachEventListeners() {
@@ -21,8 +29,8 @@ class PercentSolidsCalculator {
         const inputs = [
             this.diameterInput,
             this.diameterUnitSelect,
+            this.compositionSelect,
             this.densityInput,
-            this.densityUnitSelect,
             this.solidsInput
         ];
 
@@ -30,11 +38,31 @@ class PercentSolidsCalculator {
             input.addEventListener('input', () => this.calculate());
             input.addEventListener('change', () => this.calculate());
         });
+
+        this.compositionSelect.addEventListener('change', () => {
+            this.updateDensityInputState();
+            this.calculate();
+        });
+    }
+
+    updateDensityInputState() {
+        const selectedComposition = this.compositionSelect.value;
+
+        if (selectedComposition === 'custom') {
+            this.customDensityGroup.classList.remove('hidden');
+            return;
+        }
+
+        this.customDensityGroup.classList.add('hidden');
+        this.densityInput.value = this.compositionDensities[selectedComposition];
     }
 
     getInputValues() {
         const diameterVal = parseFloat(this.diameterInput.value);
-        const densityVal = parseFloat(this.densityInput.value);
+        const selectedComposition = this.compositionSelect.value;
+        const densityVal = selectedComposition === 'custom'
+            ? parseFloat(this.densityInput.value)
+            : this.compositionDensities[selectedComposition];
         const solidsVal = parseFloat(this.solidsInput.value);
 
         // Validation
@@ -51,8 +79,7 @@ class PercentSolidsCalculator {
             diameter: diameterVal,
             density: densityVal,
             solids: solidsVal,
-            diamUnit: this.diameterUnitSelect.value,
-            densityUnit: this.densityUnitSelect.value
+            diamUnit: this.diameterUnitSelect.value
         };
     }
 
@@ -63,16 +90,10 @@ class PercentSolidsCalculator {
             diameterInMicrometers = inputs.diameter * 0.001;
         }
 
-        // Convert density to g/mL
-        let densityInGPerMl = inputs.density;
-        if (inputs.densityUnit === 'g/L') {
-            densityInGPerMl = inputs.density * 0.001;
-        }
-
         // Calculate: a1 = 6 * (s / 100) * 10^12, calc = a1 / (w * π * d^3)
         const sFactor = inputs.solids / 100;
         const a1 = 6 * sFactor * Math.pow(10, 12);
-        const calc = a1 / (densityInGPerMl * Math.PI * Math.pow(diameterInMicrometers, 3));
+        const calc = a1 / (inputs.density * Math.PI * Math.pow(diameterInMicrometers, 3));
 
         return calc;
     }

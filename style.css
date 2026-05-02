@@ -50,6 +50,10 @@ h1 {
   gap: 8px;
 }
 
+.hidden {
+  display: none;
+}
+
 .input-group label {
   font-weight: 600;
   color: #555;
